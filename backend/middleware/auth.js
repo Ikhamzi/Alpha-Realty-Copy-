@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import Referral from '../models/Referral.js';
 import Partner from '../models/Partner.js';
 
 export const auth = async (req, res, next) => {
@@ -11,15 +11,15 @@ export const auth = async (req, res, next) => {
         let userDoc;
         if (decoded.model === 'Partner') {
             userDoc = await Partner.findById(decoded.id).select('-password');
-        } else {
-            userDoc = await User.findById(decoded.id).select('-password');
+        } else if (decoded.model === 'Referral') {
+            userDoc = await Referral.findById(decoded.id).select('-password');
         }
         if (!userDoc) return res.status(401).json({ message: 'Token is not valid' });
 
         req.user = {
             id: userDoc._id,
             name: userDoc.name,
-            role: userDoc.role || 'partner', // Partner doesn't have role field, default 'partner'
+            role: decoded.role || 'referral',
             email: userDoc.email
         };
         next();
@@ -34,4 +34,3 @@ export const roleAuth = (roles) => (req, res, next) => {
     }
     next();
 };
-

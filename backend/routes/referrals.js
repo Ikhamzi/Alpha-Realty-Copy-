@@ -6,10 +6,10 @@ const router = express.Router();
 
 router.use(auth, roleAuth(['referral']));
 
-// Create referral
+// Create referral lead
 router.post('/', async (req, res) => {
     try {
-        const referral = new Referral({ ...req.body, userId: req.user._id });
+        const referral = new Referral({ ...req.body, userId: req.user.id });
         await referral.save();
         res.status(201).json(referral);
     } catch (error) {
@@ -17,10 +17,10 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Get user referrals
+// Get user's referrals
 router.get('/', async (req, res) => {
     try {
-        const referrals = await Referral.find({ userId: req.user._id }).sort({ createdAt: -1 });
+        const referrals = await Referral.find({ userId: req.user.id }).sort({ createdAt: -1 });
         res.json(referrals);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -32,7 +32,7 @@ router.patch('/:id/status', async (req, res) => {
     try {
         const { status } = req.body;
         const referral = await Referral.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user._id },
+            { _id: req.params.id, userId: req.user.id },
             { status },
             { new: true }
         );
@@ -46,4 +46,3 @@ router.patch('/:id/status', async (req, res) => {
 });
 
 export default router;
-

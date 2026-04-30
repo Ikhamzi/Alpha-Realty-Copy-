@@ -1,10 +1,19 @@
-# TODO: Fix Double Scrollbar & Footer Visibility
+# TODO: Remove plain User model and link signup to Referral/Partner models
+
+## Task:
+- When user selects "referral" in signup → create entry in Referral model
+- When user selects "partner" in signup → create entry in Partners model  
+- Remove plain User model
 
 ## Steps:
-- [x] Step 1: Clean up src/index.css - consolidate html/body/#root rules, add proper single scrollbar (overflow-y: auto on body), ensure no excess height.
-- [x] Step 2: Clean up src/App.css - remove duplicate global rules (html/body/#root), keep only component styles.
-- [x] Step 3: Verify layout - single scrollbar on body, #root flex pushes footer to bottom, no extra space/margins/padding after footer.
-- [x] Step 4: Test with `npm run dev` - confirm on short/long content, no double scroll, footer exact bottom.
-- [ ] Step 5: Complete task.
 
+- [x] 1. Modify Referral model - add password field for authentication
+- [x] 2. Remove User model - deleted
+- [x] 3. Update auth routes
+  - [x] Update `/signup` to create in Referral or Partner model based on role
+  - [x] Update `/referral-login` to authenticate using Referral model
+- [x] 4. Update middleware/auth.js - look up in Referral model
+- [x] 5. Update referrals route - reference Referral model instead of User
+- [x] 6. Configure frontend to use backend URL
 
+## COMPLETED

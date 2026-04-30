@@ -1,35 +1,32 @@
 import express from 'express';
-import User from '../models/User.js';
+import Referral from '../models/Referral.js';
 import Partner from '../models/Partner.js';
 import jwt from 'jsonwebtoken';
 import { auth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Referral Login - User model only
+// Referral Login - Using Referral model
 router.post('/referral-login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user || !(await user.comparePassword(password))) {
+        const referral = await Referral.findOne({ email });
+        if (!referral || !(await referral.comparePassword(password))) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
-        if (user.role !== 'referral') {
-            return res.status(400).json({ message: 'Use partner login for partners' });
-        }
 
-        const token = jwt.sign({ id: user._id, role: user.role, model: 'User' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+        const token = jwt.sign({ id: referral._id, role: 'referral', model: 'Referral' }, process.env.JWT_SECRET, { expiresIn: '7d' });
         res.json({
             token,
-            role: user.role,
-            user: { id: user._id, name: user.name, role: user.role }
+            role: 'referral',
+            user: { id: referral._id, name: referral.name, role: 'referral' }
         });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Partner Login - Partner model
+// Partner Login - Using Partner model
 router.post('/partner-login', async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -49,7 +46,7 @@ router.post('/partner-login', async (req, res) => {
     }
 });
 
-// Signup
+// Signup - Creates in Referral or Partner model based on role
 router.post('/signup', async (req, res) => {
     try {
         console.log('Signup request body:', req.body);
@@ -57,18 +54,18 @@ router.post('/signup', async (req, res) => {
         const { name, email, password, role, agencyName, licenseNo } = req.body;
 
         if (role === 'referral') {
-            // Check User exists
-            const existingUser = await User.findOne({ email });
-            if (existingUser) {
-                return res.status(400).json({ message: 'User already exists' });
+            // Check Referral exists
+            const existingReferral = await Referral.findOne({ email });
+            if (existingReferral) {
+                return res.status(400).json({ message: 'Referral already exists' });
             }
-            const user = new User({ name, email, password, role: 'referral' });
-            await user.save();
-            const token = jwt.sign({ id: user._id, role: 'referral', model: 'User' }, process.env.JWT_SECRET, { expiresIn: '7d' });
+            const referral = new Referral({ name, email, password });
+            await referral.save();
+            const token = jwt.sign({ id: referral._id, role: 'referral', model: 'Referral' }, process.env.JWT_SECRET, { expiresIn: '7d' });
             res.status(201).json({
                 token,
                 role: 'referral',
-                user: { id: user._id, name: user.name, role: 'referral' }
+                user: { id: referral._id, name: referral.name, role: 'referral' }
             });
         } else if (role === 'partner') {
             // Check Partner exists
@@ -100,4 +97,3 @@ router.get('/me', auth, async (req, res) => {
 });
 
 export default router;
-
