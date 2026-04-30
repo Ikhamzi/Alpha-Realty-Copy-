@@ -9,6 +9,9 @@ import ReferralLogin from './pages/ReferralLogin.jsx';
 import PartnerLogin from './pages/PartnerLogin.jsx';
 import ReferralDashboard from './pages/ReferralDashboard.jsx';
 import PartnerDashboard from './pages/PartnerDashboard.jsx';
+import RewardsPage from './pages/RewardsPage.jsx';
+import SubmitReferralPage from './pages/SubmitReferralPage.jsx';
+import TrackReferralsPage from './pages/TrackReferralsPage.jsx';
 
 const queryClient = new QueryClient();
 
@@ -43,9 +46,24 @@ function AppContent() {
             )
           }
         />
-        <Route path="/referral-dashboard/*" element={
+        <Route path="/referral-dashboard" element={
           <ProtectedRoute roles={['referral']}>
             <ReferralDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/referral-dashboard/rewards" element={
+          <ProtectedRoute roles={['referral']}>
+            <RewardsPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/referral-dashboard/submit" element={
+          <ProtectedRoute roles={['referral']}>
+            <SubmitReferralPage />
+          </ProtectedRoute>
+        } />
+        <Route path="/referral-dashboard/track" element={
+          <ProtectedRoute roles={['referral']}>
+            <TrackReferralsPage />
           </ProtectedRoute>
         } />
         <Route path="/partner-dashboard/*" element={

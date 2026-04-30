@@ -32,32 +32,32 @@ const ReferralLogin = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-cream via-lavender-400 to-teal flex items-center justify-center px-4 py-12">
-            <div className="max-w-md w-full bg-white/20 backdrop-blur-xl border border-white/30 rounded-3xl shadow-2xl p-10 space-y-8">
+        <div className="min-h-screen bg-[#FAF7F2] flex items-center justify-center px-4 py-12">
+            <div className="max-w-md w-full bg-white/90 backdrop-blur-xl rounded-[32px] shadow-[0_24px_64px_rgba(124,111,171,0.1)] p-10 space-y-8">
                 <div className="text-center">
-                    <div className="mx-auto w-24 h-24 bg-gradient-to-r from-lavender-500 to-teal bg-opacity-80 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                    <div className="mx-auto w-24 h-24 bg-gradient-to-r from-[#7C6FAB] to-[#9BBFCC] rounded-2xl flex items-center justify-center mb-6">
                         <Users className="w-12 h-12 text-white" />
                     </div>
-                    <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-lg">Referral Login</h1>
-                    <p className="text-white/90 text-lg">Welcome back to the referral program</p>
+                    <h1 className="text-3xl font-semibold tracking-[-0.03em] text-[#1A1A2E] mb-2">Referral Login</h1>
+                    <p className="text-[#5C5374] text-lg">Welcome back to the referral program</p>
                 </div>
 
                 {error && (
-                    <div className="bg-red-500/20 border border-red-500/50 text-red-100 px-4 py-3 rounded-2xl backdrop-blur-sm">
+                    <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-2xl">
                         {error}
                     </div>
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-white/90 mb-2">Email</label>
+                        <label className="block text-sm font-medium text-[#5C5374] mb-2">Email</label>
                         <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#7C6FAB]" />
                             <input
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 bg-white/30 backdrop-blur-sm border border-white/40 rounded-2xl focus:ring-2 focus:ring-lavender-400 focus:border-transparent text-white placeholder-white/70 transition-all"
+                                className="w-full pl-12 pr-4 py-3 bg-white border border-[#E7E0EC] rounded-2xl focus:ring-2 focus:ring-[#7C6FAB] focus:border-transparent text-[#1A1A2E] placeholder-[#9A90AE] transition-all"
                                 placeholder="your@email.com"
                                 required
                             />
@@ -65,28 +65,28 @@ const ReferralLogin = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-white/90 mb-2">Password</label>
+                        <label className="block text-sm font-medium text-[#5C5374] mb-2">Password</label>
                         <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-white/70" />
+                            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-[#7C6FAB]" />
                             <input
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full pl-12 pr-4 py-3 bg-white/30 backdrop-blur-sm border border-white/40 rounded-2xl focus:ring-2 focus:ring-lavender-400 focus:border-transparent text-white placeholder-white/70 transition-all"
+                                className="w-full pl-12 pr-4 py-3 bg-white border border-[#E7E0EC] rounded-2xl focus:ring-2 focus:ring-[#7C6FAB] focus:border-transparent text-[#1A1A2E] placeholder-[#9A90AE] transition-all"
                                 placeholder="••••••••"
                                 required
                             />
                         </div>
                     </div>
 
-                    <Button type="submit" className="w-full h-14 bg-white/90 text-gray-900 font-bold text-lg rounded-2xl shadow-xl hover:bg-white hover:shadow-2xl transition-all backdrop-blur-sm" disabled={loading}>
+                    <Button type="submit" className="w-full h-14 bg-[#7C6FAB] text-white font-semibold text-lg rounded-2xl shadow-xl hover:bg-[#8a7dc5] hover:shadow-2xl transition-all" disabled={loading}>
                         {loading ? 'Signing In...' : 'Sign In'}
                     </Button>
                 </form>
 
                 <div className="text-center">
-                    <p className="text-white/80">
-                        Channel partner? <Link to="/partner-login" className="font-semibold text-teal hover:text-white underline decoration-white/50">Partner Login</Link>
+                    <p className="text-[#5C5374]">
+                        Channel partner? <Link to="/partner-login" className="font-semibold text-[#7C6FAB] hover:text-[#1A1A2E]">Partner Login</Link>
                     </p>
                 </div>
             </div>
