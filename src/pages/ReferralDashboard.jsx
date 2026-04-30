@@ -23,7 +23,7 @@ const ReferralDashboard = () => {
                         <div className="text-lg font-semibold text-gray-700">Referral Dashboard</div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="text-sm text-gray-600">Welcome, {user?.token.slice(0, 10)}...</div>
+                        <div className="text-sm text-gray-600">Welcome, {user?.name || 'Referral'}</div>
                         <Button onClick={handleLogout} variant="outline" className="flex items-center gap-2">
                             <LogOut className="w-4 h-4" />
                             Logout

@@ -19,7 +19,10 @@ const PartnerLogin = () => {
         setError('');
         try {
             const response = await api.post('/auth/partner-login', { email, password });
-            login(response.data.token, response.data.role);
+            login({
+                token: response.data.token,
+                ...response.data.user
+            });
             navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed');

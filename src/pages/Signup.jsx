@@ -10,7 +10,9 @@ const Signup = () => {
         name: '',
         email: '',
         password: '',
-        role: 'referral', // default
+        role: 'referral',
+        agencyName: '',
+        licenseNo: ''
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -22,12 +24,14 @@ const Signup = () => {
         setLoading(true);
         setError('');
         try {
-            // Mock - backend later
             const response = await api.post('/auth/signup', formData);
-            login(response.data.token, formData.role);
+            login({
+                token: response.data.token,
+                ...response.data.user
+            });
             navigate('/dashboard');
         } catch (err) {
-            setError('Signup failed');
+            setError(err.response?.data?.message || 'Signup failed');
         } finally {
             setLoading(false);
         }
@@ -108,15 +112,48 @@ const Signup = () => {
                         </select>
                     </div>
 
+                    {formData.role === 'partner' && (
+                        <>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Agency Name</label>
+                                <input
+                                    type="text"
+                                    value={formData.agencyName}
+                                    onChange={(e) => setFormData({ ...formData, agencyName: e.target.value })}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal focus:border-transparent"
+                                    placeholder="Agency Name"
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">License Number</label>
+                                <input
+                                    type="text"
+                                    value={formData.licenseNo}
+                                    onChange={(e) => setFormData({ ...formData, licenseNo: e.target.value })}
+                                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal focus:border-transparent"
+                                    placeholder="LICENSE123"
+                                    required
+                                />
+                            </div>
+                        </>
+                    )}
+
                     <Button type="submit" className="w-full h-12 text-lg bg-teal hover:bg-teal-dark" disabled={loading}>
                         {loading ? 'Creating Account...' : 'Create Account'}
                     </Button>
                 </form>
 
                 <div className="text-center">
-                    <p className="text-gray-600">
-                        Already have an account? <Link to="/login" className="font-semibold text-teal hover:text-teal-dark">Sign in</Link>
-                    </p>
+                    <p className="text-gray-600 mb-3">Already have an account? Choose the correct login type below.</p>
+                    <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                        <Link to="/referral-login" className="px-5 py-3 bg-lavender-500 text-white rounded-2xl font-semibold hover:bg-lavender-600 transition">
+                            Referral Login
+                        </Link>
+                        <Link to="/partner-login" className="px-5 py-3 bg-teal-500 text-white rounded-2xl font-semibold hover:bg-teal-600 transition">
+                            Partner Login
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>

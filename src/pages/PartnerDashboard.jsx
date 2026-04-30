@@ -22,7 +22,7 @@ const PartnerDashboard = () => {
                         <div className="text-lg font-semibold text-gray-700">Partner Portal</div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="text-sm text-gray-600">Welcome Partner</div>
+                        <div className="text-sm text-gray-600">Welcome, {user?.name || 'Partner'}</div>
                         <Button onClick={handleLogout} variant="outline" className="flex items-center gap-2">
                             <LogOut className="w-4 h-4" />
                             Logout

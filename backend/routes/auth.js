@@ -54,7 +54,6 @@ router.post('/signup', async (req, res) => {
         const { name, email, password, role, agencyName, licenseNo } = req.body;
 
         if (role === 'referral') {
-            // Check Referral exists
             const existingReferral = await Referral.findOne({ email });
             if (existingReferral) {
                 return res.status(400).json({ message: 'Referral already exists' });
@@ -64,11 +63,17 @@ router.post('/signup', async (req, res) => {
             const token = jwt.sign({ id: referral._id, role: 'referral', model: 'Referral' }, process.env.JWT_SECRET, { expiresIn: '7d' });
             res.status(201).json({
                 token,
-                role: 'referral',
-                user: { id: referral._id, name: referral.name, role: 'referral' }
+                user: {
+                    id: referral._id,
+                    name: referral.name,
+                    email: referral.email,
+                    role: 'referral'
+                }
             });
         } else if (role === 'partner') {
-            // Check Partner exists
+            if (!agencyName || !licenseNo) {
+                return res.status(400).json({ message: 'Agency name and license number are required for partners' });
+            }
             const existingPartner = await Partner.findOne({ email });
             if (existingPartner) {
                 return res.status(400).json({ message: 'Partner already exists' });
@@ -78,8 +83,12 @@ router.post('/signup', async (req, res) => {
             const token = jwt.sign({ id: partner._id, role: 'partner', model: 'Partner' }, process.env.JWT_SECRET, { expiresIn: '7d' });
             res.status(201).json({
                 token,
-                role: 'partner',
-                user: { id: partner._id, name: partner.name, role: 'partner' }
+                user: {
+                    id: partner._id,
+                    name: partner.name,
+                    email: partner.email,
+                    role: 'partner'
+                }
             });
         } else {
             res.status(400).json({ message: 'Invalid role' });

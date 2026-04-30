@@ -1,45 +1,45 @@
 import express from 'express';
-import Referral from '../models/Referral.js';
+import ReferralLead from '../models/ReferralLead.js';
 import { auth, roleAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
 router.use(auth, roleAuth(['referral']));
 
-// Create referral lead
+// Create referral lead for the authenticated referral user
 router.post('/', async (req, res) => {
     try {
-        const referral = new Referral({ ...req.body, userId: req.user.id });
-        await referral.save();
-        res.status(201).json(referral);
+        const lead = new ReferralLead({ ...req.body, referralId: req.user.id });
+        await lead.save();
+        res.status(201).json(lead);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Get user's referrals
+// Get logged in referral user's leads
 router.get('/', async (req, res) => {
     try {
-        const referrals = await Referral.find({ userId: req.user.id }).sort({ createdAt: -1 });
-        res.json(referrals);
+        const leads = await ReferralLead.find({ referralId: req.user.id }).sort({ createdAt: -1 });
+        res.json(leads);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
 });
 
-// Update referral status
+// Update referral lead status
 router.patch('/:id/status', async (req, res) => {
     try {
         const { status } = req.body;
-        const referral = await Referral.findOneAndUpdate(
-            { _id: req.params.id, userId: req.user.id },
+        const lead = await ReferralLead.findOneAndUpdate(
+            { _id: req.params.id, referralId: req.user.id },
             { status },
             { new: true }
         );
-        if (!referral) {
-            return res.status(404).json({ message: 'Referral not found' });
+        if (!lead) {
+            return res.status(404).json({ message: 'Referral lead not found' });
         }
-        res.json(referral);
+        res.json(lead);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
