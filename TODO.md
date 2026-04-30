@@ -1,22 +1,23 @@
-# TODO - Separate Signup Pages for Referral and Partner
+# TODO List
 
-## Task
-Create separate signup pages for referral and partner instead of the current combined page, styled identically to the login pages.
+## Task: Implement Verified Leads Modal with Update Status and Share Property Details
 
-## Steps Completed:
-- [x] 0. Analyzed current structure
-- [x] 1. Read Login.jsx, Signup.jsx, ReferralLogin.jsx, PartnerLogin.jsx
-- [x] 2. Understood the different styling approaches
-- [x] 3. Created plan
-- [x] 4. Create ReferralSignup.jsx (styled like ReferralLogin with purple theme)
-- [x] 5. Create PartnerSignup.jsx (styled like PartnerLogin with teal theme)
-- [x] 6. Modify Signup.jsx to serve as role selector (redirect to appropriate page)
-- [x] 7. Update App.jsx with new routes
-- [x] 8. Login.jsx already links to /signup (role selector)
-- [x] 9. Verify implementation
+### Steps:
+- [x] 1. Update sampleVerified data with new fields (name, refId, submittedBy, assignedTo, contact, propertyType, budget, location, timeline, currentStatus)
+- [x] 2. Add modal state management for verified lead details modal
+- [x] 3. Implement verified lead modal with all required fields
+- [x] 4. Add "Update Status" button with dropdown modal
+- [x] 5. Add status options dropdown and alert on status change
+- [x] 6. Add "Share Property Details" button and modal
+- [x] 7. Implement property details modal with date input and send alert
 
-## Notes:
-- ReferralLogin uses purple theme (#7C6FAB)
-- PartnerLogin uses teal theme (#5B8FA8)
-- Both use custom inline CSS with Google Fonts (Cormorant Garamond + DM Sans)
-- Both have decorative rings and wolf logo SVG
+### Progress:
+- Plan confirmed by user
+- All implementation completed in OperationsDashboard.jsx
+- Updated sampleVerified data with Rajesh Kumar example
+- Added Update Status modal with dropdown containing all status options
+- Added Share Property Details modal with property name, details, and date fields
+- All modals styled consistently with existing design (no style changes)
+- Alerts implemented as per specifications
+
+### Status: COMPLETED

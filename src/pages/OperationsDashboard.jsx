@@ -77,7 +77,7 @@ const samplePending = [
     { id: 'REF1234567892', name: 'Amit Patel', referrer: 'Priya Sharma (women-pg)', status: 'Pending Verification', phone: '+91 98765 43212', email: 'amit.patel@email.com', occupation: 'Software Engineer - IT Department', propertyType: 'Plot', budget: '₹50 Lakhs', paymentMode: 'Loan', timeline: 'Within 2 Months', location: 'Hitech City', details: 'Looking for a plot to build a custom home' }
 ];
 const sampleVerified = [
-    { id: 'REF9876543210', name: 'Priya Singh', referrer: 'Rahul Kumar (student)', status: 'Verified Lead', phone: '+91 91234 56789', email: 'priya.singh@email.com', occupation: 'Doctor', propertyType: 'Apartment', budget: '₹1.2 Cr', paymentMode: 'Full Payment', timeline: 'Within 1 Month', location: 'Jubilee Hills', details: 'Looking for 3BHK luxury apartment' }
+    { id: 'REF1234567890', name: 'Rajesh Kumar', submittedBy: 'Rahul Verma', assignedTo: 'Channel Partner - Vijay', status: 'Verified', phone: '+91 98765 43210', email: 'rajesh.kumar@email.com', occupation: 'Business Owner', propertyType: 'apartment', budget: '₹75 Lakhs', paymentMode: 'Full Payment', timeline: 'Within 1 Month', location: 'Gachibowli', currentStatus: 'contacted', details: 'Looking for a premium apartment' }
 ];
 
 const OperationsDashboard = () => {
@@ -85,8 +85,28 @@ const OperationsDashboard = () => {
     const [view, setView] = useState('pending');
     const leads = view === 'pending' ? samplePending : sampleVerified;
     const [currentLead, setCurrentLead] = useState(leads[0]);
+    const [showUpdateStatusModal, setShowUpdateStatusModal] = useState(false);
+    const [showSharePropertyModal, setShowSharePropertyModal] = useState(false);
+    const [propertyName, setPropertyName] = useState('');
+    const [propertyDetails, setPropertyDetails] = useState('');
+    const [visitDate, setVisitDate] = useState('');
 
     const handleViewChange = (v) => { setView(v); setCurrentLead(v === 'pending' ? samplePending[0] : sampleVerified[0]); };
+
+    const statusOptions = ['contacted', 'Meeting scheduled', 'Meeting done', 'Site visit scheduled', 'site visit done', 'Advance paid', 'sale completed'];
+
+    const handleStatusChange = (newStatus) => {
+        alert(`lead status updated to: ${newStatus}`);
+        setShowUpdateStatusModal(false);
+    };
+
+    const handleSendPropertyDetails = () => {
+        alert('Poperty details sent to buyer via WhatsApp and email!');
+        setShowSharePropertyModal(false);
+        setPropertyName('');
+        setPropertyDetails('');
+        setVisitDate('');
+    };
 
     return (
         <>
@@ -101,7 +121,7 @@ const OperationsDashboard = () => {
                             <div style={{ fontSize: 7, fontWeight: 600, color: '#7C6FAB', letterSpacing: '0.38em', textTransform: 'uppercase' }}>REALTY</div>
                         </div>
                         <div style={{ width: 1, height: 22, background: '#E6DDD2', margin: '0 14px' }} />
-                        <span style={{ fontSize: 11, fontWeight: 500, color: '#6A6480', letterSpacing: '0.04em' }}>Operations Dashboard</span>
+                        <span style={{ fontSize: 11, fontWeight: 500, color: '#6A6480', letterSpacing: '0.04em' }}>Operations Team</span>
                     </div>
                     <button className="btn-back" onClick={() => navigate('/')}><ArrowLeft size={11} /> Back to Landing</button>
                 </nav>
@@ -144,8 +164,13 @@ const OperationsDashboard = () => {
                                     <div>
                                         <span className="tag" style={{ marginBottom: 8 }}>Lead Details</span>
                                         <h2 className="display" style={{ fontSize: 28, fontWeight: 400, color: '#1A1A2E', lineHeight: 1.1, margin: '0 0 4px' }}>{currentLead.name}</h2>
-                                        <div style={{ fontSize: 10, color: '#9A90AE', fontFamily: 'monospace', marginBottom: 2 }}>{currentLead.id}</div>
-                                        <div style={{ fontSize: 11, color: '#8A8098' }}>{currentLead.referrer}</div>
+                                        <div style={{ fontSize: 10, color: '#9A90AE', fontFamily: 'monospace', marginBottom: 2 }}>Ref ID: {currentLead.id}</div>
+                                        {currentLead.submittedBy && (
+                                            <div style={{ fontSize: 11, color: '#8A8098' }}>Submitted by: {currentLead.submittedBy} | Assigned to: {currentLead.assignedTo}</div>
+                                        )}
+                                        {!currentLead.submittedBy && (
+                                            <div style={{ fontSize: 11, color: '#8A8098' }}>{currentLead.referrer}</div>
+                                        )}
                                     </div>
                                     <span className="status-pill" style={currentLead.status === 'Pending Verification'
                                         ? { background: '#FFF4E8', color: '#C47C20', border: '1px solid #F5DEB8' }
@@ -160,29 +185,49 @@ const OperationsDashboard = () => {
                                 <div className="detail-grid" style={{ marginBottom: 20 }}>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                                         <div>
-                                            <div className="field-label">Primary Contact</div>
+                                            <div className="field-label">Contact</div>
                                             <div className="field-box"><Phone size={13} style={{ color: '#9B8EC7', flexShrink: 0 }} />{currentLead.phone}</div>
                                         </div>
-                                        <div>
-                                            <div className="field-label">Email</div>
-                                            <div className="field-box"><Mail size={13} style={{ color: '#9B8EC7', flexShrink: 0 }} />{currentLead.email}</div>
-                                        </div>
-                                        <div>
-                                            <div className="field-label">Occupation</div>
-                                            <div className="field-box">{currentLead.occupation}</div>
-                                        </div>
+                                        {view === 'pending' && (
+                                            <>
+                                                <div>
+                                                    <div className="field-label">Email</div>
+                                                    <div className="field-box"><Mail size={13} style={{ color: '#9B8EC7', flexShrink: 0 }} />{currentLead.email}</div>
+                                                </div>
+                                                <div>
+                                                    <div className="field-label">Occupation</div>
+                                                    <div className="field-box">{currentLead.occupation}</div>
+                                                </div>
+                                            </>
+                                        )}
+                                        {view === 'verified' && (
+                                            <div>
+                                                <div className="field-label">Current Status</div>
+                                                <div className="field-box" style={{ fontWeight: 600, textTransform: 'capitalize' }}>{currentLead.currentStatus}</div>
+                                            </div>
+                                        )}
                                     </div>
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                                         <div className="mini-grid">
-                                            <div><div className="field-label">Property Type</div><div className="field-box" style={{ fontWeight: 600 }}>{currentLead.propertyType}</div></div>
+                                            <div><div className="field-label">Property Type</div><div className="field-box" style={{ fontWeight: 600, textTransform: 'capitalize' }}>{currentLead.propertyType}</div></div>
                                             <div><div className="field-label">Budget</div><div className="field-box" style={{ fontWeight: 600 }}>{currentLead.budget}</div></div>
-                                            <div><div className="field-label">Payment Mode</div><div className="field-box">{currentLead.paymentMode}</div></div>
-                                            <div><div className="field-label">Timeline</div><div className="field-box">{currentLead.timeline}</div></div>
+                                            {view === 'pending' && (
+                                                <>
+                                                    <div><div className="field-label">Payment Mode</div><div className="field-box">{currentLead.paymentMode}</div></div>
+                                                    <div><div className="field-label">Timeline</div><div className="field-box">{currentLead.timeline}</div></div>
+                                                </>
+                                            )}
                                         </div>
                                         <div>
-                                            <div className="field-label">Location Preference</div>
-                                            <div className="field-box" style={{ background: '#F0F6FF', borderColor: '#C8D8F0', fontWeight: 600, color: '#2A4A8A' }}>{currentLead.location}</div>
+                                            <div className="field-label">Location</div>
+                                            <div className="field-box" style={{ background: '#F0F6FF', borderColor: '#C8D8F0', fontWeight: 600, color: '#2A4A8A', textTransform: 'capitalize' }}>{currentLead.location}</div>
                                         </div>
+                                        {view === 'pending' && (
+                                            <div>
+                                                <div className="field-label">Timeline</div>
+                                                <div className="field-box">{currentLead.timeline}</div>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -195,14 +240,114 @@ const OperationsDashboard = () => {
 
                                 <div style={{ height: 1, background: '#F0EBE2', marginBottom: 16 }} />
 
-                                <div style={{ display: 'flex', gap: 10 }}>
-                                    <button className="btn-danger" onClick={() => alert('Marked as fake')}>✕ &nbsp;Mark as Fake</button>
-                                    <button className="btn-success" onClick={() => alert('Verified & proceeded')}>✓ &nbsp;Verify & Proceed</button>
-                                </div>
+                                {view === 'pending' && (
+                                    <div style={{ display: 'flex', gap: 10 }}>
+                                        <button className="btn-danger" onClick={() => alert('Marked as fake')}>✕ &nbsp;Mark as Fake</button>
+                                        <button className="btn-success" onClick={() => alert('Verified & proceeded')}>✓ &nbsp;Verify & Proceed</button>
+                                    </div>
+                                )}
+
+                                {view === 'verified' && (
+                                    <div style={{ display: 'flex', gap: 10 }}>
+                                        <button className="btn-success" onClick={() => setShowUpdateStatusModal(true)} style={{ flex: 1 }}>Update Status</button>
+                                        <button className="btn-success" onClick={() => setShowSharePropertyModal(true)} style={{ flex: 1 }}>Share Property Details</button>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
                 </main>
+
+                {/* Update Status Modal */}
+                {showUpdateStatusModal && (
+                    <div style={{
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(26, 26, 46, 0.5)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+                    }}>
+                        <div className="d-card" style={{ padding: '28px 32px', maxWidth: 450, width: '90%' }}>
+                            <div style={{ marginBottom: 24 }}>
+                                <span className="tag" style={{ marginBottom: 8 }}>Update Lead Status</span>
+                                <h2 className="display" style={{ fontSize: 20, fontWeight: 400, color: '#1A1A2E', lineHeight: 1.1, margin: '8px 0 0' }}>Update the current status of {currentLead.name}</h2>
+                            </div>
+
+                            <div style={{ height: 1, background: '#F0EBE2', marginBottom: 20 }} />
+
+                            <div style={{ marginBottom: 22 }}>
+                                <div className="field-label" style={{ marginBottom: 12 }}>Select new status</div>
+                                <select style={{
+                                    width: '100%', padding: '10px 14px', border: '1px solid #EDE8E0', borderRadius: 2,
+                                    background: '#FAF7F2', fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#1A1A2E',
+                                    cursor: 'pointer', appearance: 'none', backgroundImage: "url(\"data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237C6FAB' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e\")",
+                                    backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', backgroundSize: '20px', paddingRight: '35px'
+                                }} defaultValue="" onChange={(e) => {
+                                    if (e.target.value) handleStatusChange(e.target.value);
+                                }}>
+                                    <option value="">-- Select Status --</option>
+                                    {statusOptions.map(status => (
+                                        <option key={status} value={status}>{status}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div style={{ height: 1, background: '#F0EBE2', marginBottom: 16 }} />
+
+                            <div style={{ display: 'flex', gap: 10 }}>
+                                <button className="btn-back" onClick={() => setShowUpdateStatusModal(false)} style={{ flex: 1, textAlign: 'center' }}>Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Share Property Details Modal */}
+                {showSharePropertyModal && (
+                    <div style={{
+                        position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(26, 26, 46, 0.5)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, overflowY: 'auto', paddingTop: 40, paddingBottom: 40
+                    }}>
+                        <div className="d-card" style={{ padding: '28px 32px', maxWidth: 500, width: '90%' }}>
+                            <div style={{ marginBottom: 24 }}>
+                                <span className="tag" style={{ marginBottom: 8 }}>Share Property Details</span>
+                                <h2 className="display" style={{ fontSize: 20, fontWeight: 400, color: '#1A1A2E', lineHeight: 1.1, margin: '8px 0 0' }}>Send property information to {currentLead.name}</h2>
+                            </div>
+
+                            <div style={{ height: 1, background: '#F0EBE2', marginBottom: 20 }} />
+
+                            <div style={{ marginBottom: 16 }}>
+                                <div className="field-label" style={{ marginBottom: 8 }}>Property Name</div>
+                                <input type="text" placeholder="e.g., Alpha Heights Premium Apartments" value={propertyName} onChange={(e) => setPropertyName(e.target.value)}
+                                    style={{
+                                        width: '100%', padding: '10px 14px', border: '1px solid #EDE8E0', borderRadius: 2, background: '#FAF7F2',
+                                        fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#1A1A2E', boxSizing: 'border-box'
+                                    }} />
+                            </div>
+
+                            <div style={{ marginBottom: 16 }}>
+                                <div className="field-label" style={{ marginBottom: 8 }}>Property Details</div>
+                                <textarea placeholder="Enter property details, amenities, pricing, etc." value={propertyDetails} onChange={(e) => setPropertyDetails(e.target.value)}
+                                    style={{
+                                        width: '100%', padding: '10px 14px', border: '1px solid #EDE8E0', borderRadius: 2, background: '#FAF7F2',
+                                        fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#1A1A2E', boxSizing: 'border-box', minHeight: 100, resize: 'vertical'
+                                    }} />
+                            </div>
+
+                            <div style={{ marginBottom: 16 }}>
+                                <div className="field-label" style={{ marginBottom: 8 }}>Schedule Site Visit Date</div>
+                                <input type="datetime-local" value={visitDate} onChange={(e) => setVisitDate(e.target.value)}
+                                    style={{
+                                        width: '100%', padding: '10px 14px', border: '1px solid #EDE8E0', borderRadius: 2, background: '#FAF7F2',
+                                        fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: '#1A1A2E', boxSizing: 'border-box'
+                                    }} />
+                            </div>
+
+                            <div style={{ height: 1, background: '#F0EBE2', marginBottom: 16 }} />
+
+                            <div style={{ display: 'flex', gap: 10 }}>
+                                <button className="btn-back" onClick={() => setShowSharePropertyModal(false)} style={{ flex: 1, textAlign: 'center' }}>Cancel</button>
+                                <button className="btn-success" onClick={handleSendPropertyDetails} style={{ flex: 1 }}>Send via WhatsApp & Email</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );
