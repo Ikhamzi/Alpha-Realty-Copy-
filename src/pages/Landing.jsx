@@ -255,13 +255,13 @@ const Hero = () => {
                             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.52 }}
                             style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}
                         >
-                            <Link to="/signup" style={{ textDecoration: 'none' }}>
+                            <Link to="/referral-signup" style={{ textDecoration: 'none' }}>
                                 <button className="btn-v">
                                     Join Referral Program
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
                                 </button>
                             </Link>
-                            <Link to="/signup" style={{ textDecoration: 'none' }}>
+                            <Link to="/partner-signup" style={{ textDecoration: 'none' }}>
                                 <button className="btn-o">Become a Partner</button>
                             </Link>
                         </motion.div>
@@ -374,7 +374,7 @@ const ChoosePath = () => (
                                 </li>
                             ))}
                         </ul>
-                        <Link to="/signup" style={{ textDecoration: 'none', display: 'block', marginBottom: 10 }}>
+                        <Link to="/referral-signup" style={{ textDecoration: 'none', display: 'block', marginBottom: 10 }}>
                             <button className="btn-v" style={{ width: '100%', justifyContent: 'center' }}>
                                 Join Referral Program
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
@@ -405,7 +405,7 @@ const ChoosePath = () => (
                                 </li>
                             ))}
                         </ul>
-                        <Link to="/signup" style={{ textDecoration: 'none', display: 'block', marginBottom: 10 }}>
+                        <Link to="/partner-signup" style={{ textDecoration: 'none', display: 'block', marginBottom: 10 }}>
                             <button className="btn-dk" style={{ width: '100%', justifyContent: 'center' }}>
                                 Become a Channel Partner
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
@@ -536,8 +536,8 @@ const CTABanner = () => (
             <FI delay={0.2}><p style={{ fontSize: 15, color: '#8A8098', marginBottom: 40, lineHeight: 1.8 }}>and channel partners building wealth through Alpha Realty today.</p></FI>
             <FI delay={0.3}>
                 <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <Link to="/signup" style={{ textDecoration: 'none' }}><button className="btn-v" style={{ padding: '16px 40px', fontSize: 13 }}>Join as Referrer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button></Link>
-                    <Link to="/signup" style={{ textDecoration: 'none' }}><button className="btn-o" style={{ padding: '16px 40px', fontSize: 13 }}>Become a Partner</button></Link>
+                    <Link to="/referral-signup" style={{ textDecoration: 'none' }}><button className="btn-v" style={{ padding: '16px 40px', fontSize: 13 }}>Join as Referrer <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg></button></Link>
+                    <Link to="/partner-signup" style={{ textDecoration: 'none' }}><button className="btn-o" style={{ padding: '16px 40px', fontSize: 13 }}>Become a Partner</button></Link>
                 </div>
             </FI>
         </div>

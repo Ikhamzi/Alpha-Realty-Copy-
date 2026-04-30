@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext.jsx';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock } from 'lucide-react';
+import { User, Mail, Lock, Building, FileText } from 'lucide-react';
 import api from '../lib/api.js';
 
 const STYLES = `
@@ -61,22 +61,33 @@ const Wolf = ({ size = 36 }) => (
     </svg>
 );
 
-const PartnerLogin = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const PartnerSignup = () => {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        password: '',
+        agencyName: '',
+        licenseNo: ''
+    });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); setLoading(true); setError('');
+        e.preventDefault();
+        setLoading(true);
+        setError('');
         try {
-            const response = await api.post('/auth/partner-login', { email, password });
+            const signupData = { ...formData, role: 'partner' };
+            const response = await api.post('/auth/signup', signupData);
             login({ token: response.data.token, ...response.data.user });
             navigate('/dashboard');
-        } catch (err) { setError(err.response?.data?.message || 'Login failed'); }
-        finally { setLoading(false); }
+        } catch (err) {
+            setError(err.response?.data?.message || 'Signup failed');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -101,36 +112,92 @@ const PartnerLogin = () => {
 
                     <span className="tag" style={{ marginBottom: 10 }}>Channel Partner</span>
                     <h1 className="display" style={{ fontSize: 32, fontWeight: 300, color: '#1A1A2E', lineHeight: 1.05, margin: '0 0 6px' }}>
-                        Partner <em style={{ color: '#5B8FA8', fontStyle: 'italic' }}>Portal</em>
+                        Become a <em style={{ color: '#5B8FA8', fontStyle: 'italic' }}>Partner</em>
                     </h1>
-                    <p style={{ fontSize: 11, color: '#9A90AE', marginBottom: 28 }}>Access your channel partner dashboard</p>
+                    <p style={{ fontSize: 11, color: '#9A90AE', marginBottom: 28 }}>Register your agency</p>
 
                     {error && <div className="err-box" style={{ marginBottom: 18 }}>{error}</div>}
 
                     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                         <div>
+                            <label className="field-label">Full Name</label>
+                            <div className="input-wrap">
+                                <User size={13} />
+                                <input
+                                    className="field-input"
+                                    type="text"
+                                    placeholder="John Doe"
+                                    value={formData.name}
+                                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div>
                             <label className="field-label">Email</label>
                             <div className="input-wrap">
                                 <Mail size={13} />
-                                <input className="field-input" type="email" placeholder="your@email.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                                <input
+                                    className="field-input"
+                                    type="email"
+                                    placeholder="your@email.com"
+                                    value={formData.email}
+                                    onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                    required
+                                />
                             </div>
                         </div>
                         <div>
                             <label className="field-label">Password</label>
                             <div className="input-wrap">
                                 <Lock size={13} />
-                                <input className="field-input" type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} required />
+                                <input
+                                    className="field-input"
+                                    type="password"
+                                    placeholder="••••••••"
+                                    value={formData.password}
+                                    onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="field-label">Agency Name</label>
+                            <div className="input-wrap">
+                                <Building size={13} />
+                                <input
+                                    className="field-input"
+                                    type="text"
+                                    placeholder="Your Agency"
+                                    value={formData.agencyName}
+                                    onChange={e => setFormData({ ...formData, agencyName: e.target.value })}
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="field-label">License Number</label>
+                            <div className="input-wrap">
+                                <FileText size={13} />
+                                <input
+                                    className="field-input"
+                                    type="text"
+                                    placeholder="License #"
+                                    value={formData.licenseNo}
+                                    onChange={e => setFormData({ ...formData, licenseNo: e.target.value })}
+                                    required
+                                />
                             </div>
                         </div>
                         <button className="btn-submit" type="submit" disabled={loading} style={{ marginTop: 6 }}>
-                            {loading ? 'Signing In…' : 'Sign In'}
+                            {loading ? 'Creating Account…' : 'Create Account'}
                         </button>
                     </form>
 
                     <div style={{ height: 1, background: '#F0EBE2', margin: '22px 0' }} />
                     <p style={{ fontSize: 11, color: '#9A90AE', textAlign: 'center' }}>
                         Referral member?{' '}
-                        <Link to="/referral-login" style={{ color: '#7C6FAB', fontWeight: 600, textDecoration: 'none' }}>Referral Login →</Link>
+                        <Link to="/referral-signup" style={{ color: '#5B8FA8', fontWeight: 600, textDecoration: 'none' }}>Referral Sign up →</Link>
                     </p>
                 </div>
             </div>
@@ -138,4 +205,4 @@ const PartnerLogin = () => {
     );
 };
 
-export default PartnerLogin;
+export default PartnerSignup;

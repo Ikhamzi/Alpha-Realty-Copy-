@@ -7,6 +7,8 @@ import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import ReferralLogin from './pages/ReferralLogin.jsx';
 import PartnerLogin from './pages/PartnerLogin.jsx';
+import ReferralSignup from './pages/ReferralSignup.jsx';
+import PartnerSignup from './pages/PartnerSignup.jsx';
 import ReferralDashboard from './pages/ReferralDashboard.jsx';
 import PartnerDashboard from './pages/PartnerDashboard.jsx';
 import RewardsPage from './pages/RewardsPage.jsx';
@@ -33,9 +35,11 @@ function AppContent() {
         <Route path="/operations" element={<OperationsDashboard />} />
         <Route path="/referral-login" element={<ReferralLogin />} />
         <Route path="/partner-login" element={<PartnerLogin />} />
-        <Route path="/choose-login" element={<Login />} />
+<Route path="/choose-login" element={<Login />} />
         <Route path="/login" element={<Navigate to="/choose-login" replace />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/referral-signup" element={<ReferralSignup />} />
+        <Route path="/partner-signup" element={<PartnerSignup />} />
         <Route
           path="/dashboard"
           element={
